@@ -12,6 +12,11 @@ li {
   margin: 10px 0;
 }
 
+li.active {
+  margin-left: 5px;
+  transform: scale(1.15);
+}
+
 strong {
   margin-left: 10px;
 }
