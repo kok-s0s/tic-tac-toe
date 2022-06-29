@@ -77,6 +77,7 @@ class Game extends React.Component {
     super(props) // 定义子类的构造函数时，都需要调用 super 方法，必须以此为开头。
     this.state = {
       history: [{ squares: Array(9).fill(null) }],
+      coordinate: [],
       stepNumber: 0,
       xIsNext: true,
     }
@@ -90,7 +91,7 @@ class Game extends React.Component {
       return
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O'
-    this.setState({ history: history.concat([{ squares: squares }]), stepNumber: history.length, xIsNext: !this.state.xIsNext })
+    this.setState({ history: history.concat([{ squares: squares }]), coordinate: [...this.state.coordinate, i], stepNumber: history.length, xIsNext: !this.state.xIsNext })
   }
 
   jumpTo(step) {
@@ -106,6 +107,13 @@ class Game extends React.Component {
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          {move !== 0 ? (
+            <strong className="location">
+              [{Math.floor(this.state.coordinate[move - 1] / 3) + 1}, {(this.state.coordinate[move - 1] % 3) + 1}]
+            </strong>
+          ) : (
+            ''
+          )}
         </li>
       )
     })
