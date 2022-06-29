@@ -16,7 +16,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a]
+      return { player: squares[a], line: [a, b, c] }
     }
   }
   return null
@@ -25,7 +25,7 @@ function calculateWinner(squares) {
 function Square(props) {
   return (
     <button
-      className="square"
+      className={'square ' + (props.isWinning ? 'square--winning' : null)}
       onClick={() => {
         // 避免 this 造成的困扰，使用箭头函数
         props.onClick()
@@ -38,7 +38,7 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
-    return <Square value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />
+    return <Square isWinning={this.props.winningSquares.includes(i)} key={'square ' + i} value={this.props.squares[i]} onClick={() => this.props.onClick(i)} />
   }
 
   render() {
@@ -129,7 +129,7 @@ class Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board squares={current.squares} onClick={(i) => this.handleClick(i)} />
+          <Board winningSquares={winner ? winner.line : []} squares={current.squares} onClick={(i) => this.handleClick(i)} />
         </div>
         <div className="game-info">
           <div>{status}</div>
